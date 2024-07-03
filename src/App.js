@@ -116,7 +116,7 @@ function App() {
         </div>
 
         <div>Length of each edges: </div>
-        <span style={{fontWeight: 'bold', color: '#1446A0'}}>{displacement} cm</span>
+        <span style={{fontWeight: 'bold', color: '#1446A0', fontSize: "45px"}}>{displacement} cm</span>
       </header>
     </div>
   );
