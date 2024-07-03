@@ -2,8 +2,8 @@ import React from "react";
 import "./App.css";
 
 function App() {
-  const [diameter, setDiameter] = React.useState();
-  const [numOfSections, setNumOfSections] = React.useState();
+  const [diameter, setDiameter] = React.useState(20);
+  const [numOfSections, setNumOfSections] = React.useState(5);
   const [displacement, setDisplacement] = React.useState();
   const [clipPath, setClipPath] = React.useState();
   const [borderClipPath, setBorderClipPath] = React.useState();
