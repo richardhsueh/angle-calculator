@@ -6,7 +6,7 @@ function App() {
   const [numOfSections, setNumOfSections] = React.useState(5);
   const [displacement, setDisplacement] = React.useState();
   const [clipPath, setClipPath] = React.useState();
-  const [borderClipPath, setBorderClipPath] = React.useState();
+  const [lineClipPath, setLineClipPath] = React.useState();
 
   function calculateDisplacement(radius, angle) {
     // Convert angle from degrees to radians
@@ -56,32 +56,29 @@ function App() {
   React.useEffect(() => {
     if (numOfSections) {
       const angle = calculateAngle(numOfSections);
-      let shape = `polygon(`;
+
+      let line = `polygon(`;
 	  	let x1,y1;
-	    let borderWidth = 4;
+	    let borderWidth = 6;
 	  	for(let i=0;i<numOfSections;i++) {
 	  		x1 = 50 + 50*Math.cos(angle + (2 * i * Math.PI)/numOfSections);
 	  		y1 = 50 + 50*Math.sin(angle + (2 * i * Math.PI)/numOfSections);
-
-	  		shape+=`${+x1.toFixed(2)}% ${+y1.toFixed(2)}%,`;
+        if (i === 0 || i === 1) {
+          line+=`${+x1.toFixed(2)}% ${+y1.toFixed(2)}%,`;
+        }
 	  	}
-	  	x1 = 50 + 50*Math.cos(angle);
-	  	y1 = 50 + 50*Math.sin(angle);
-	  	shape+=`${+x1.toFixed(2)}% ${+y1.toFixed(2)}%,`;
 
       for(let i=(numOfSections- 1);i>=0;i--) {
         x1 = `calc(${+(50 + 50*Math.cos(angle + (2 * i * Math.PI)/numOfSections)).toFixed(2)}% - ${+(borderWidth*Math.cos(angle + (2 * i * Math.PI)/numOfSections)).toFixed(2)}px)`;
         y1 = `calc(${+(50 + 50*Math.sin(angle + (2 * i * Math.PI)/numOfSections)).toFixed(2)}% - ${+(borderWidth*Math.sin(angle + (2 * i * Math.PI)/numOfSections)).toFixed(2)}px)`;
-        shape+=`${x1} ${y1},`;
+        if (i === 0 || i === 1) {
+          line+=`${x1} ${y1},`;
+        }
       }
-      x1 = `calc(${+(50 + 50*Math.cos(angle + (2 * (numOfSections- 1) * Math.PI)/numOfSections)).toFixed(2)}% - ${+(borderWidth*Math.cos(angle + (2 * (numOfSections- 1) * Math.PI)/numOfSections)).toFixed(2)}px)`;
-      y1 = `calc(${+(50 + 50*Math.sin(angle + (2 * (numOfSections- 1) * Math.PI)/numOfSections)).toFixed(2)}% - ${+(borderWidth*Math.sin(angle + (2 * (numOfSections- 1) * Math.PI)/numOfSections)).toFixed(2)}px)`;
-      shape+=`${x1} ${y1},`;
 
-
-	  	shape = shape.slice(0, -1);
-	  	shape+=`)`;
-      setBorderClipPath(shape);
+      line = line.slice(0, -1);
+      line+=`)`;
+      setLineClipPath(line);
     }
 
   }, [numOfSections]);
@@ -90,8 +87,8 @@ function App() {
       <header className="App-header">
         <div className="frame">
           <div className="box" style={{ clipPath }}></div>
-          <div className="border" style={{ clipPath: borderClipPath }}></div>
           <div className="circle"></div>
+          <div className="line" style={{ clipPath: lineClipPath }}></div>
         </div>
         <div className="inputGroup">
           <label>Diameter(cm): </label>
@@ -115,7 +112,7 @@ function App() {
           />
         </div>
 
-        <div>Length of each edges: </div>
+        <div>Distance between angle: </div>
         <span style={{fontWeight: 'bold', color: '#1446A0', fontSize: "45px"}}>{displacement} cm</span>
       </header>
     </div>
